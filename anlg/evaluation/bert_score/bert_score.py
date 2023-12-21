@@ -1,4 +1,4 @@
-from bert_score import score
+from anlg.evaluation.bert_score.score import score
 # Code for BertScore reused from original implementation: https://github.com/Tiiiger/bert_score
 
 class BertScore:
@@ -7,6 +7,7 @@ class BertScore:
         self.ref_for_image = {}
 
     def compute_score(self, gts, res):
+        # gts: 正解, res: 生成されたやつ
 
         assert(gts.keys() == res.keys())
         imgIds = gts.keys()
@@ -17,6 +18,7 @@ class BertScore:
         for id in imgIds:
             hypo = res[id]
             ref = gts[id]
+            # gts: 正解, res: 生成されたやつ
 
             # Sanity check.
             assert(type(hypo) is list)
@@ -28,7 +30,7 @@ class BertScore:
             ref_input += ref
             same_indices.append(len(ref_input))
 
-        p, r, f_scores = score.score(hyp_input, ref_input, bert="bert-base-uncased")
+        p, r, f_scores = score(hyp_input, ref_input, bert="bert-base-uncased")
  
         prev_idx = 0
         aggreg_f1_scores = []

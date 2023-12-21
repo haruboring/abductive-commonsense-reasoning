@@ -7,7 +7,6 @@ import os
 import sys
 import nltk
 from nltk.translate.meteor_score import meteor_score
-
 # Assumes meteor-1.5.jar is in the same directory as meteor.py.  Change as needed.
 #METEOR_JAR = 'meteor-1.5.jar'
 # print METEOR_JAR
@@ -24,7 +23,10 @@ class Meteor:
 
         for i in imgIds:
             assert(len(res[i]) == 1)
-            score = round(meteor_score(gts[i], res[i][0]), 4)
+            references_tokens = [nltk.word_tokenize(ref) for ref in gts[i]]
+            # hypothesis文をトークン化
+            hypothesis_tokens = nltk.word_tokenize(res[i][0])
+            score = round(meteor_score(references_tokens, hypothesis_tokens), 4)
             scores.append(score)
         #print('{}\n'.format(eval_line))
         #self.meteor_p.stdin.write('{}\n'.format(eval_line))
